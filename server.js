@@ -16,7 +16,12 @@ Mongoose.connect(process.env.MONGO_URL, {
 }).catch((err) => {
     console.log("no mongo connection" + err);
 })
+if (process.env.NODE_ENV === 'production') {
+    //*Set static folder up in production
+    app.use(express.static('client/build'));
 
+    app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'client', 'build','index.html')));
+  }
 
 app.use(cors());
 
